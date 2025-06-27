@@ -1,93 +1,91 @@
-# 💬 Lime Chat — Full-Stack Real-Time Chat Application
+# 🟢 Lime Chat – Real-Time Messaging App (Backend)
 
-**Lime Chat** is a powerful full-stack real-time chat app that enables multiple users to register, log in, and chat privately — just like WhatsApp or Messenger. It uses modern web technologies like **Node.js**, **Socket.IO**, and **MongoDB**, and is designed to be extendable with features like media sharing, typing indicators, notifications, and more.
+Lime Chat is a real-time chat backend built using **Node.js**, **Express**, **MongoDB**, and **Socket.IO**.  
+It supports private and group messaging, audio/video content, and real-time messaging using WebSockets.  
+The architecture is scalable and ready to integrate WebRTC-based calling (1:1 and group meetings).
 
 ---
 
 ## 🚀 Features
 
-- 🔐 **User Authentication** (Register & Login with JWT)
-- 💬 **Real-Time Messaging** via Socket.IO
-- 🧑‍🤝‍🧑 **One-to-One Private Chats**
-- 💾 **Store Messages in MongoDB**
-- 👁 **Typing & Seen Indicators**
-- 📨 **Notifications for New Messages**
-- 🎥 **Media Support (Images, Audio, etc.)**
-- 👥 **Group Chat Rooms (coming soon)**
-- 📋 **User List to select who to chat with**
-- ✨ Simple & Clean UI (HTML/CSS/Vanilla JS or extend with React)
+### ✅ Authentication
+- User registration and login using JWT
+- Password hashing with bcrypt
+- Auth middleware for protected routes
+
+### 💬 Messaging
+- Create private and group chat rooms
+- Send messages in real-time via Socket.IO
+- Save all messages to MongoDB (text, audio, video)
+- Upload audio using `Multer`
+- Ready for video support
+
+### 🔄 Real-Time Chat (Socket.IO)
+- User connection mapping via Socket ID
+- Real-time messaging between users
+- Emits `receive_message` on delivery
+- Tracks online/disconnected users
+
+### 📞 Call Logging (ready for WebRTC)
+- Models and API for tracking call data
+- Supports voice, video, and meeting types
 
 ---
 
-## 🧱 Project Structure
+## 🗂 Project Structure
 
-lime-chat/
-├── server/
-│ ├── controllers/ # Request handlers (auth, chat)
-│ ├── models/ # MongoDB models (User, Message)
-│ ├── routes/ # Express routes (auth, messages)
-│ ├── config/ # MongoDB connection setup
-│ ├── middleware/ # JWT verification middleware
-│ └── server.js # Main server file + Socket.IO
-├── client/
-│ ├── login.html # Login page
-│ ├── register.html # Registration page
-│ ├── users.html # List of available users
-│ ├── chat.html # Private chat UI
-│ ├── style.css # Shared styles
-│ └── script.js # Frontend socket logic
-├── .env # Environment variables
-├── package.json
-└── README.md
+Lime-Chat/
+├── controllers/
+│ ├── auth.controller.js
+│ ├── chat.controller.js
+│ ├── message.controller.js
+│ └── call.controller.js
+│
+├── middleware/
+│ ├── auth.middleware.js
+│ ├── validateRequest.middleware.js
+│ └── upload.middleware.js
+│
+├── models/
+│ ├── user.model.js
+│ ├── chatRoom.model.js
+│ ├── message.model.js
+│ ├── call.model.js
+│ └── meeting.model.js
+│
+├── routes/
+│ ├── auth.routes.js
+│ ├── chat.routes.js
+│ ├── message.routes.js
+│ └── call.routes.js
+│
+├── sockets/
+│ └── socket.js
+│
+├── uploads/ # Audio/Video file uploads
+├── server.js
+└── .env
 
-
----
-
-## 🔐 Authentication Flow
-
-1. User registers or logs in.
-2. JWT token is generated and saved in `localStorage`.
-3. Token is sent with protected API requests.
-4. User selects another user to chat with → joins private room.
-5. Messages are exchanged live using Socket.IO.
-
----
-
-## 🧠 Socket.IO Events
-
-| Event            | Description                                 |
-|------------------|---------------------------------------------|
-| `joinRoom`       | Join a private room between two users       |
-| `chatMessage`    | Send message to the other user              |
-| `receiveMessage` | Receive message in real time                |
-| `typing`         | Notify when user is typing                  |
-| `stopTyping`     | Notify when user stops typing               |
-| `seenMessage`    | Mark message as seen                        |
-| `newNotification`| Trigger popup or sound on new message       |
 
 ---
 
-## 📦 Installation
-
-### 1. Clone the project
+## ⚙️ Installation
 
 ```bash
-git clone https://github.com/your-username/lime-chat.git
+git clone https://github.com/yourusername/lime-chat.git
 cd lime-chat
 npm install
-```
-- Create file .env
-  
-PORT=3000
-MONGO_URI=mongodb://127.0.0.1:27017/lime-chat
-JWT_SECRET=supersecretkey
-```bash
-npm run dev
-```
-| Method | Endpoint               | Description                 |
-| ------ | ---------------------- | --------------------------- |
-| POST   | /api/register          | Register new user           |
-| POST   | /api/login             | Login existing user         |
-| GET    | /api/users             | Get all users               |
-| GET    | /api/messages/\:userId | Get chat messages with user |
-| POST   | /api/messages          | Save message to DB          |
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/limechat
+JWT_SECRET=your_jwt_secret_key
+npm start
+
+
+
+
+
+
+
+
+
+
