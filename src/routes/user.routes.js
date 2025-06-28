@@ -1,13 +1,13 @@
 import Router from 'express';
-import * as userRepo from '../repos/user.repo.js';
+import * as userController from '../controllers/user.controller.js';
 import authMiddleware from '../middleware/auth.middleware.js';
 
 const userRoutes = Router();
 // Create a new user
-userRoutes.post('/', authMiddleware, userRepo.createUser )
-userRoutes.get('/:id', authMiddleware, userRepo.getUserById )
-userRoutes.get('/', authMiddleware, userRepo.getUsers )
-userRoutes.get('/', authMiddleware, userRepo.updateUser )
-userRoutes.delete('/', authMiddleware, userRepo.deleteUser )
+userRoutes.post('/', authMiddleware, userController.createUser )
+userRoutes.get('/:id', authMiddleware, userController.getUserById )
+userRoutes.get('/', authMiddleware, userController.getUsers )
+userRoutes.get('/', authMiddleware, userController.updateUser )
+userRoutes.delete('/', authMiddleware, userController.deleteUser )
 
 export default userRoutes;
