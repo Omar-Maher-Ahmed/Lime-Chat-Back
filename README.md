@@ -37,25 +37,36 @@ The architecture is scalable and ready to integrate WebRTC-based calling (1:1 an
 Lime-Chat/
 ├── controllers/
 │ ├── auth.controller.js
-│ ├── chat.controller.js
+│ ├── room.controller.js
 │ ├── message.controller.js
 │ └── call.controller.js
+│ └── meeting.controller.js
 │
 ├── middleware/
 │ ├── auth.middleware.js
 │ ├── validateRequest.middleware.js
 │ └── upload.middleware.js
+│ ├── user.middleware.js
+│ ├── room.middleware.js
+│ ├── message.middleware.js
 │
 ├── models/
 │ ├── user.model.js
-│ ├── chatRoom.model.js
+│ ├── room.model.js
 │ ├── message.model.js
 │ ├── call.model.js
 │ └── meeting.model.js
-│
+|
+├── repo/
+│ ├── auth.repo.js
+│ ├── room.repo.js
+│ ├── message.repo.js
+│ └── call.repo.js
+│ └── meeting.repo.js
+|
 ├── routes/
 │ ├── auth.routes.js
-│ ├── chat.routes.js
+│ ├── room.routes.js
 │ ├── message.routes.js
 │ └── call.routes.js
 │
