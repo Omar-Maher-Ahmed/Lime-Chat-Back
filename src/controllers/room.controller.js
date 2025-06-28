@@ -1,4 +1,4 @@
-import ChatRoom from '../models/chatRoom.model.js';
+import ChatRoom from '../models/room.model.js';
 
 const createRoom = async (req, res) => {
     const { name, isGroup, participants } = req.body;

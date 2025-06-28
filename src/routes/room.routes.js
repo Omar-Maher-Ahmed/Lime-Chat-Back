@@ -1,5 +1,5 @@
 import express from 'express';
-import createRoom from '../controllers/chat.controller.js';
+import createRoom from '../controllers/room.controller.js';
 import authMiddleware from '../middleware/auth.middleware.js';
 import { sendMessage } from '../controllers/message.controller.js';
 
