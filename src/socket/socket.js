@@ -1,19 +1,14 @@
 import Message from '../models/message.model.js';
 
-
 const users = new Map(); // userId => socketId
-
 const initSocket = (io) => {
-
     io.on('connection', (socket) => {
         console.log('✅ New socket connected:', socket.id);
-
         // تسجيل المستخدم
         socket.on('user_connected', (userId) => {
             users.set(userId, socket.id);
             console.log(`👤 User ${userId} connected with socket ${socket.id}`);
         });
-
         // إرسال رسالة
         socket.on('send_message', async ({ senderId, receiverId, content, roomId, type = 'text' }) => {
             try {
@@ -24,7 +19,6 @@ const initSocket = (io) => {
                     type,
                     content
                 });
-
                 // 2. إرسالها للمستقبل لو متصل
                 const receiverSocket = users.get(receiverId);
                 if (receiverSocket) {
@@ -42,7 +36,6 @@ const initSocket = (io) => {
                 socket.emit('error_message', { message: 'Failed to send message' });
             }
         });
-
         // قطع الاتصال
         socket.on('disconnect', () => {
             console.log('❌ Socket disconnected:', socket.id);
