@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import authRoutes from './src/routes/auth.routes.js';
 import messageRoutes from './src/routes/message.routes.js';
-import chatRoutes from './src/routes/chat.routes.js';
+import chatRoutes from './src/routes/room.routes.js';
 import callRoutes from './src/routes/call.routes.js';
 import { errorHandler } from './src/middleware/error.middleware.js';
 import { logger } from './src/middleware/logger.middleware.js';

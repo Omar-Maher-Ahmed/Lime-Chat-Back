@@ -1,4 +1,48 @@
 import Message from '../models/message.model.js';
+import * as messageRepo from '../repos/message.repo.js';
+
+export const createMessage = async (req, res) => {
+    try {
+        const message = await messageRepo.createMessage(req.body);
+        res.status(201).json(message);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+export const getMessageById = async (req, res) => {
+    try {
+        const message = await messageRepo.getMessageById(req.params.id);
+        res.status(200).json(message);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+export const getAllMessages = async (req, res) => {
+    try {
+        const messages = await messageRepo.getAllMessages();
+        res.status(200).json(messages);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+export const updateMessage = async (req, res) => {
+    try {
+        const message = await messageRepo.updateMessage(req.params.id, req.body);
+        res.status(200).json(message);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const deleteMessage = async (req, res) => {
+    try {
+        const message = await messageRepo.deleteMessage(req.params.id);
+        res.status(200).json(message);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 
 export const sendMessage = async (req, res) => {
     const { room, content, type } = req.body;
