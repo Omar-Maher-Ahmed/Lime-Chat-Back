@@ -6,7 +6,6 @@ import authMiddleware from '../middleware/auth.middleware.js';
 const chatRoutes = express.Router();
 
 chatRoutes.post('/create', authMiddleware, roomController.createRoom);
-chatRoutes.get('/rooms', authMiddleware, roomController.getRooms);
 chatRoutes.get('/rooms/:id', authMiddleware, roomController.getRoomById);
 chatRoutes.put('/rooms/:id', authMiddleware, roomController.updateRoom);
 chatRoutes.delete('/rooms/:id', authMiddleware, roomController.deleteRoom);

@@ -20,9 +20,7 @@ export const userExists = async (req, res, next) => {
 
 export const validateCreateUser = (req, res, next) => {
     const { name, email, password } = req.body;
-
     const errors = [];
-
     if (!name || typeof name !== 'string' || name.trim().length < 3) {
         errors.push('Name must be at least 3 characters long');
     }
