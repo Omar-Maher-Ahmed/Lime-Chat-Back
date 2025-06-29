@@ -11,6 +11,7 @@ import { logger } from './src/middleware/logger.middleware.js';
 import initSocket from './src/socket/socket.js';
 import { Server } from 'socket.io';
 import http from 'http';
+import uploadRouter from './src/routes/upload.routes.js';
 
 
 dotenv.config();
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(errorHandler);
 app.use(logger);
 
+app.use('/api/upload', uploadRouter);
 app.use('/api/auth', authRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/message', messageRoutes);

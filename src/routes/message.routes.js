@@ -6,12 +6,12 @@ import upload from '../middleware/upload.middleware.js';
 
 const messageRoutes = express.Router();
 
-messageRoutes.post('/send', authMiddleware, requireFields('room', 'content'), messageController.sendMessage);
+messageRoutes.post('/send', authMiddleware, upload.single('file'), requireFields('room', 'content'), messageController.sendMessage);
 messageRoutes.post('/send-audio', authMiddleware, upload.single('audio'), messageController.sendAudioMessage);
-messageRoutes.post('/', authMiddleware, messageController.createMessage );
-messageRoutes.get('/:id', authMiddleware, messageController.getMessageById );
-messageRoutes.get('/', authMiddleware, messageController.getAllMessages );
-messageRoutes.put('/', authMiddleware, messageController.updateMessage );
-messageRoutes.delete('/', authMiddleware, messageController.deleteMessage );
+messageRoutes.post('/', authMiddleware, upload.single('file'), messageController.createMessage);
+messageRoutes.get('/:id', authMiddleware, messageController.getMessageById);
+messageRoutes.get('/', authMiddleware, messageController.getAllMessages);
+messageRoutes.put('/', authMiddleware, upload.single('file'), messageController.updateMessage);
+messageRoutes.delete('/', authMiddleware, messageController.deleteMessage);
 
 export default messageRoutes;

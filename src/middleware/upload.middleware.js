@@ -1,19 +1,24 @@
 import multer from 'multer';
-import path from 'path';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import cloudinary from '../../cloudinary.config.js';
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, 'uploads/'),
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname);
+const storage = new CloudinaryStorage({
+    cloudinary,
+    params: async (req, file) => {
+        const resourceType = file.mimetype.startsWith('video')
+            ? 'video'
+            : file.mimetype.startsWith('audio')
+                ? 'video'
+                : 'image';
+        return {
+            folder: 'lime-chat-files', 
+            public_id: Date.now() + '-' + file.originalname,
+            resource_type: resourceType, 
+            allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'mp4', 'mp3', 'webm', 'wav', 'mkv'],
+        };
     }
 });
 
-const fileFilter = (req, file, cb) => {
-    const allowedTypes = /mp3|wav|mp4|mkv|webm/;
-    const ext = path.extname(file.originalname).toLowerCase();
-    cb(null, allowedTypes.test(ext));
-};
-
-const upload = multer({ storage, fileFilter });
+const upload = multer({ storage });
 
 export default upload;
