@@ -20,7 +20,7 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(errorHandler);
+// app.use(errorHandler);
 app.use(logger);
 
 app.use('/api/auth', authRoutes);
