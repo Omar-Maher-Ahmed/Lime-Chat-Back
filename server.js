@@ -2,7 +2,6 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import authRoutes from './src/routes/auth.routes.js';
 import messageRoutes from './src/routes/message.routes.js';
 import chatRoutes from './src/routes/room.routes.js';
 import callRoutes from './src/routes/call.routes.js';
@@ -13,6 +12,7 @@ import { Server } from 'socket.io';
 import http from 'http';
 import uploadRouter from './src/routes/upload.routes.js';
 import userRoutes from './src/routes/user.routes.js';
+import authRoutes from './src/routes/auth.routes.js';
 
 
 dotenv.config();

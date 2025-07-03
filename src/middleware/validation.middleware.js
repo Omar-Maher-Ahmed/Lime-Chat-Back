@@ -1,7 +1,7 @@
 
 
 export const validationMiddelware = (schema) => {
-    (req, res, next) => {
+   return (req, res, next) => {
         //validation for login
         const loginResult = schema.validate(req.body, { abortEarly: false });
         if (loginResult.error) {
