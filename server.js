@@ -12,6 +12,7 @@ import initSocket from './src/socket/socket.js';
 import { Server } from 'socket.io';
 import http from 'http';
 import uploadRouter from './src/routes/upload.routes.js';
+import userRoutes from './src/routes/user.routes.js';
 
 
 dotenv.config();
@@ -22,8 +23,9 @@ app.use(express.json());
 app.use(errorHandler);
 app.use(logger);
 
-app.use('/api/upload', uploadRouter);
 app.use('/api/auth', authRoutes);
+app.use('/api/upload', uploadRouter);
+app.use('/api/user', userRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/message', messageRoutes);
 app.use('/api/call', callRoutes);
@@ -43,13 +45,6 @@ const io = new Server(server, {
         methods: ['GET', 'POST', 'PUT', 'DELETE'],
     }
 });
-
-// io.on('connection', (socket) => {
-//     console.log('✅ New socket connected:', socket.id);
-//     socket.on('disconnect', () => {
-//         console.log('❌ Socket disconnected:', socket.id);
-//     });
-// })
 
 initSocket(io);
 

@@ -1,4 +1,4 @@
-import userRepo from '../repos/user.repo.js';
+import * as userRepo from '../repos/user.repo.js';
 
 export const userExists = async (req, res, next) => {
     try {
