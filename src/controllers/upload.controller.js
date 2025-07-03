@@ -1,50 +1,5 @@
-// import * as uploadRepo from '../repos/upload.repo.js';
-
-// export const uploadFile = async (req, res) => {
-//     try {
-//         const file = req.file;
-//         const uploadedFile = await uploadRepo.uploadFile(file);
-//         res.status(201).json(uploadedFile);
-//     } catch (err) {
-//         res.status(500).json({ message: err.message });
-//     }
-// }
-// export const getFileById = async (req, res) => {
-//     try {
-//         const file = await uploadRepo.getFileById(req.params.id);
-//         res.json(file);
-//     } catch (err) {
-//         res.status(500).json({ message: err.message });
-//     }
-// }
-// export const getFiles = async (req, res) => {
-//     try {
-//         const files = await uploadRepo.getFiles();
-//         res.json(files);
-//     } catch (err) {
-//         res.status(500).json({ message: err.message });
-//     }
-// }
-// export const updateFile = async (req, res) => {
-//     try {
-//         const updatedFile = await uploadRepo.updateFile(req.params.id, req.body);
-//         res.json(updatedFile);
-//     } catch (err) {
-//         res.status(500).json({ message: err.message });
-//     }
-// }
-// export const deleteFile = async (req, res) => {
-//     try {
-//         await uploadRepo.deleteFile(req.params.id);
-//         res.json({ message: 'File deleted' });
-//     } catch (err) {
-//         res.status(500).json({ message: err.message });
-//     }
-// }
-
-
 import uploadModel from '../models/upload.model.js';
-import cloudinary from '../../cloudinary.config.js';
+import cloudinary from '../utils/cloudinary.js';
 
 // CREATE
 export const uploadFile = async (req, res) => {

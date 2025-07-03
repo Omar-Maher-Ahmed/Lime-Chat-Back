@@ -1,5 +1,10 @@
 import * as userRepo from '../repos/user.repo.js';
 
+//
+export const updateProfileImage = async (req, res)=>{
+
+}
+
 export const getUserById = async (req, res) => {
     try {
         const user = await userRepo.getUserById(req.params.id);
