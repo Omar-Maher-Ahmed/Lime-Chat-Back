@@ -1,10 +1,5 @@
 import * as userRepo from '../repos/user.repo.js';
 
-//
-export const updateProfileImage = async (req, res)=>{
-
-}
-
 export const getUserById = async (req, res) => {
     try {
         const user = await userRepo.getUserById(req.params.id);
@@ -40,7 +35,7 @@ export const updateUser = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
     try {
-        const user = await userRepo.deleteUser(req.params.id);
+        const user = await userRepo.deleteUser(req.params.id, req.body);
         res.json(user);
     } catch (err) {
         res.status(500).json({ message: err.message });

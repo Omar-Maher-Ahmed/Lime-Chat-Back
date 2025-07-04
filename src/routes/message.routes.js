@@ -1,16 +1,16 @@
 import express from 'express';
 import * as messageController from '../controllers/message.controller.js';
 import authMiddleware from '../middleware/auth.middleware.js';
-import upload from '../middleware/upload.middleware.js';
+import { validationMiddleware } from '../middleware/validation.middleware.js';
+import { deleteMessage, sendMessage, updateMessage } from '../validations/message.validation.js';
 
 const messageRoutes = express.Router();
 
-messageRoutes.post('/send', authMiddleware, upload.single('file'), messageController.sendMessage);
-messageRoutes.post('/send-audio', authMiddleware, upload.single('audio'), messageController.sendAudioMessage);
-messageRoutes.post('/', authMiddleware, upload.single('file'), messageController.createMessage);
+messageRoutes.post('/send', authMiddleware, validationMiddleware(sendMessage), messageController.sendMessage);
+// messageRoutes.post('/send-audio', authMiddleware, messageController.sendAudioMessage);
 messageRoutes.get('/:id', authMiddleware, messageController.getMessageById);
 messageRoutes.get('/', authMiddleware, messageController.getAllMessages);
-messageRoutes.put('/', authMiddleware, upload.single('file'), messageController.updateMessage);
-messageRoutes.delete('/', authMiddleware, messageController.deleteMessage);
+messageRoutes.put('/', authMiddleware, validationMiddleware(updateMessage),messageController.updateMessage);
+messageRoutes.delete('/', authMiddleware, validationMiddleware(deleteMessage), messageController.deleteMessage);
 
 export default messageRoutes;

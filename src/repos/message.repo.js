@@ -1,6 +1,6 @@
 import messageModel from "../models/message.model.js";
 
-export const createMessage = async (messageData) => {
+export const sendMessage = async (messageData) => {
     try {
         const message = await messageModel.create(messageData);
         return message;
@@ -8,6 +8,7 @@ export const createMessage = async (messageData) => {
         throw new Error(`Error creating message: ${error.message}`);
     }
 }
+
 export const getMessageById = async (messageId) => {
     try {
         const message = await messageModel.findById(messageId);
@@ -20,6 +21,7 @@ export const getMessageById = async (messageId) => {
         throw new Error(`Error fetching message: ${error.message}`);
     }
 }
+
 export const getAllMessages = async () => {
     try {
         const messages = await messageModel.find();
@@ -28,6 +30,7 @@ export const getAllMessages = async () => {
         throw new Error(`Error fetching messages: ${error.message}`);
     }
 }
+
 export const updateMessage = async (messageId, updateData) => {
     try {
         const message = await messageModel.findByIdAndUpdate(messageId, updateData, { new: true });

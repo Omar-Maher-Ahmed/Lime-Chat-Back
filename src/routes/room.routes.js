@@ -1,14 +1,13 @@
 import express from 'express';
 import * as roomController from '../controllers/room.controller.js';
 import authMiddleware from '../middleware/auth.middleware.js';
-// import { sendMessage } from '../controllers/message.controller.js';
+import { validationMiddleware } from '../middleware/validation.middleware.js';
+import { createRoomSchema, deleteRoomSchema, updateRoomSchema } from '../validations/room.validation.js';
 
-const chatRoutes = express.Router();
+const roomRoutes = express.Router();
+roomRoutes.post('/create', authMiddleware, validationMiddleware(createRoomSchema), roomController.createRoom);
+roomRoutes.get('/rooms/:id', authMiddleware, roomController.getRoomById);
+roomRoutes.put('/rooms/:id', authMiddleware, validationMiddleware(updateRoomSchema), roomController.updateRoom);
+roomRoutes.delete('/rooms/:id', authMiddleware, validationMiddleware(deleteRoomSchema), roomController.deleteRoom);
 
-chatRoutes.post('/create', authMiddleware, roomController.createRoom);
-chatRoutes.get('/rooms/:id', authMiddleware, roomController.getRoomById);
-chatRoutes.put('/rooms/:id', authMiddleware, roomController.updateRoom);
-chatRoutes.delete('/rooms/:id', authMiddleware, roomController.deleteRoom);
-// chatRoutes.post('/rooms/:id/messages', authMiddleware, sendMessage);
-
-export default chatRoutes;
+export default roomRoutes;

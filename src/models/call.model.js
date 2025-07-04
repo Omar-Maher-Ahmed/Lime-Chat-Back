@@ -6,8 +6,8 @@ const callSchema = new mongoose.Schema({
     receivers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     startedAt: { type: Date, default: Date.now },
     endedAt: { type: Date },
-    room: { type: mongoose.Schema.Types.ObjectId, ref: 'Room', required: true },
-    roomId: { type: mongoose.Schema.Types.ObjectId, ref: 'ChatRoom' },
+    room: { type: mongoose.Schema.Types.ObjectId, ref: 'room', required: true },
+    roomId: { type: mongoose.Schema.Types.ObjectId, ref: 'room' },
 }, { timestamps: true });
 
 export default mongoose.model('Call', callSchema);

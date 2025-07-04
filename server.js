@@ -3,14 +3,12 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import messageRoutes from './src/routes/message.routes.js';
-import chatRoutes from './src/routes/room.routes.js';
+import roomRoutes from './src/routes/room.routes.js';
 import callRoutes from './src/routes/call.routes.js';
-import { errorHandler } from './src/middleware/error.middleware.js';
-import { logger } from './src/middleware/logger.middleware.js';
+// import { errorHandler } from './src/middleware/error.middleware.js';
 import initSocket from './src/socket/socket.js';
 import { Server } from 'socket.io';
 import http from 'http';
-import uploadRouter from './src/routes/upload.routes.js';
 import userRoutes from './src/routes/user.routes.js';
 import authRoutes from './src/routes/auth.routes.js';
 
@@ -21,12 +19,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 // app.use(errorHandler);
-app.use(logger);
 
 app.use('/api/auth', authRoutes);
-app.use('/api/upload', uploadRouter);
 app.use('/api/user', userRoutes);
-app.use('/api/chat', chatRoutes);
+app.use('/api/room', roomRoutes);
 app.use('/api/message', messageRoutes);
 app.use('/api/call', callRoutes);
 
