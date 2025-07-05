@@ -5,9 +5,10 @@ import { validationMiddleware } from '../middleware/validation.middleware.js';
 import { createRoomSchema, deleteRoomSchema, updateRoomSchema } from '../validations/room.validation.js';
 
 const roomRoutes = express.Router();
-roomRoutes.post('/create', authMiddleware, validationMiddleware(createRoomSchema), roomController.createRoom);
-roomRoutes.get('/rooms/:id', authMiddleware, roomController.getRoomById);
-roomRoutes.put('/rooms/:id', authMiddleware, validationMiddleware(updateRoomSchema), roomController.updateRoom);
-roomRoutes.delete('/rooms/:id', authMiddleware, validationMiddleware(deleteRoomSchema), roomController.deleteRoom);
+roomRoutes.post('/', authMiddleware, validationMiddleware(createRoomSchema), roomController.createRoom);
+roomRoutes.get('/', authMiddleware, roomController.getAllRooms);
+roomRoutes.get('/:id', authMiddleware, roomController.getRoomById);
+roomRoutes.put('/:id', authMiddleware, validationMiddleware(updateRoomSchema), roomController.updateRoom);
+roomRoutes.delete('/:id', authMiddleware, validationMiddleware(deleteRoomSchema), roomController.deleteRoom);
 
 export default roomRoutes;

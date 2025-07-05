@@ -4,6 +4,7 @@ import * as messageRepo from '../repos/message.repo.js';
 export const sendMessage = async (req, res) => {
     const { room, content, type } = req.body;
     try {
+        const id = await req.user.id;
         const message = await Message.create({
             sender: req.user.id,
             room,
@@ -27,10 +28,33 @@ export const getMessageById = async (req, res) => {
 
 export const getAllMessages = async (req, res) => {
     try {
-        const messages = await messageRepo.getAllMessages();
-        res.status(200).json(messages);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+        const myId = req.user._id;
+        const messages = await Message.find({
+            $or: [
+                { sender: myId },
+                { receiver: myId }
+            ]
+        }).select('sender receiver');
+
+        // ✅ 2. طلع IDs المستخدمين التانيين من الرسائل
+        const userIds = new Set();
+
+        messages.forEach(msg => {
+            if (msg.sender.toString() !== myId.toString()) {
+                userIds.add(msg.sender.toString());
+            }
+            if (msg.receiver.toString() !== myId.toString()) {
+                userIds.add(msg.receiver.toString());
+            }
+        });
+
+        // ✅ 3. رجّع بياناتهم من الـ User collection
+        const users = await User.find({ _id: { $in: Array.from(userIds) } }).select('name email profileImage');
+
+        res.status(200).json(users);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: err.message });
     }
 };
 

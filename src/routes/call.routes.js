@@ -1,6 +1,7 @@
 import express from 'express';
 import * as callController from '../controllers/call.controller.js';
 import authMiddleware from '../middleware/auth.middleware.js';
+import {validationMiddleware} from '../middleware/validation.middleware.js';
 import { createCallHistorySchema, deleteCallHistorySchema, endCallSchema, startCallSchema } from '../validations/call.validation.js';
 
 const callRoutes = express.Router();

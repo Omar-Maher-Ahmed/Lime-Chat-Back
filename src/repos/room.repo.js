@@ -1,13 +1,10 @@
 import roomModel from "../models/room.model.js";
 
 export const createRoom = async (roomData) => {
+    console.log({ roomData });
+
     try {
-        const room = await roomModel.createRoom({
-            name,
-            isGroup: roomData.isGroup || false,
-            participants: roomData.participants || [],
-            createdBy: roomData.createdBy
-        });
+        const room = await roomModel.create(roomData);
         return room;
     } catch (error) {
         throw new Error(`Error creating room: ${error.message}`);

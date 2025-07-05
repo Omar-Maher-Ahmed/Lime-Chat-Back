@@ -2,7 +2,11 @@ import * as roomRepo from '../repos/room.repo.js';
 
 export const createRoom = async (req, res) => {
     try {
+        
         const room = await roomRepo.createRoom(req.body);
+        if (!room) {
+            return res.status(400).json({ message: 'Failed to create room' });
+        }
         res.status(201).json(room);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -11,7 +15,8 @@ export const createRoom = async (req, res) => {
 
 export const getAllRooms = async (req, res) => {
     try {
-        const rooms = await roomRepo.getAllRooms();
+        const userId = req.user._id;
+        const rooms = await roomRepo.getAllRooms(userId);
         res.status(200).json(rooms);
     } catch (error) {
         res.status(500).json({ message: error.message });

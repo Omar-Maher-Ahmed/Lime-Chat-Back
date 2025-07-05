@@ -5,9 +5,7 @@ export const validationMiddleware = (schema) => {
         try {
             const validationErr = [];
             dataMethods.forEach(key => {
-                console.log("validation middleware is running");
                 if (schema[key]) {
-                    
                     const validationResult = schema[key].validate(req[key], { abortEarly: false });
                     if (validationResult.error) {
                         validationErr.push(validationResult.error.details);

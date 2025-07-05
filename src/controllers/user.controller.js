@@ -8,6 +8,7 @@ export const getUserById = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
 export const me = async (req, res) => {
     try {
         res.json(req.user);
@@ -15,6 +16,7 @@ export const me = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
 export const getUsers = async (req, res) => {
     try {
         const users = await userRepo.getUsers();
