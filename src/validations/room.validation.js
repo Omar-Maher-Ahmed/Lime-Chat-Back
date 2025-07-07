@@ -18,4 +18,4 @@ export const deleteRoomSchema = {
     body: joi.object({
         name: joi.string().pattern(/[a-zA-Z\u0621-\u064Aء-ئ][^#&<>\"~;$^%{}?]{1,20}$/).required(),
     })
-}
+};

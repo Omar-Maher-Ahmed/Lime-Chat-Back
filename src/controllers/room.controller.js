@@ -2,7 +2,7 @@ import * as roomRepo from '../repos/room.repo.js';
 
 export const createRoom = async (req, res) => {
     try {
-        
+        req.body.createdBy = req.user._id;
         const room = await roomRepo.createRoom(req.body);
         if (!room) {
             return res.status(400).json({ message: 'Failed to create room' });
@@ -21,7 +21,8 @@ export const getAllRooms = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-}
+};
+
 export const getRoomById = async (req, res) => {
     try {
         const room = await roomRepo.getRoomById(req.params.id);
@@ -33,6 +34,7 @@ export const getRoomById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 export const updateRoom = async (req, res) => {
     try {
         const room = await roomRepo.updateRoom(req.params.id, req.body);
@@ -44,6 +46,7 @@ export const updateRoom = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 export const deleteRoom = async (req, res) => {
     try {
         const room = await roomRepo.deleteRoom(req.params.id);
@@ -55,6 +58,7 @@ export const deleteRoom = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 export const list = async (req, res) => {
     try {
         const rooms = await roomRepo.getAllRooms();

@@ -9,7 +9,8 @@ export const createRoom = async (roomData) => {
     } catch (error) {
         throw new Error(`Error creating room: ${error.message}`);
     }
-}
+};
+
 export const getAllRooms = async () => {
     try {
         const rooms = await roomModel.find();
@@ -17,7 +18,7 @@ export const getAllRooms = async () => {
     } catch (error) {
         throw new Error(`Error fetching rooms: ${error.message}`);
     }
-}
+};
 
 export const getRoomById = async (roomId) => {
     try {
@@ -29,7 +30,8 @@ export const getRoomById = async (roomId) => {
     } catch (error) {
         throw new Error(`Error fetching room: ${error.message}`);
     }
-}
+};
+
 export const updateRoom = async (roomId, updateData) => {
     try {
         const room = await roomModel.findByIdAndUpdate(roomId, updateData, { new: true });
@@ -40,7 +42,8 @@ export const updateRoom = async (roomId, updateData) => {
     } catch (error) {
         throw new Error(`Error updating room: ${error.message}`);
     }
-}
+};
+
 export const deleteRoom = async (roomId) => {
     try {
         const room = await roomModel.findByIdAndDelete(roomId);
@@ -51,7 +54,7 @@ export const deleteRoom = async (roomId) => {
     } catch (error) {
         throw new Error(`Error deleting room: ${error.message}`);
     }
-}
+};
 
 export const list = async (req, res) => {
     try {
@@ -60,4 +63,4 @@ export const list = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-}
+};
