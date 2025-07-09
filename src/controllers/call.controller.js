@@ -2,11 +2,12 @@ import Call from '../models/call.model.js';
 
 export const startCall = async (req, res) => {
     try {
-        const { room, type } = req.body;
-
+    const { caller, receiver, roomId, type, startedAt } = req.body;
         const call = await Call.create({
-            room,
+            roomId,
             caller: req.user.id,
+            receiver,
+            startedAt,
             type,
         });
 

@@ -1,13 +1,17 @@
 import Message from '../models/message.model.js';
+import userModel from '../models/user.model.js';
 import * as messageRepo from '../repos/message.repo.js';
 
 export const sendMessage = async (req, res) => {
-    const { room, content, type } = req.body;
+    const { room, content, type, receiver } = req.body;
+    console.log(req.body);
+
     try {
         const id = await req.user.id;
         const message = await Message.create({
             sender: req.user.id,
             room,
+            receiver,
             content,
             type,
         });
@@ -36,21 +40,17 @@ export const getAllMessages = async (req, res) => {
             ]
         }).select('sender receiver');
 
-        // ✅ 2. طلع IDs المستخدمين التانيين من الرسائل
-        const userIds = new Set();
+        const userId = new Set();
 
         messages.forEach(msg => {
             if (msg.sender.toString() !== myId.toString()) {
-                userIds.add(msg.sender.toString());
+                userId.add(msg.sender.toString());
             }
             if (msg.receiver.toString() !== myId.toString()) {
-                userIds.add(msg.receiver.toString());
+                userId.add(msg.receiver.toString());
             }
         });
-
-        // ✅ 3. رجّع بياناتهم من الـ User collection
-        const users = await User.find({ _id: { $in: Array.from(userIds) } }).select('name email profileImage');
-
+        const users = await userModel.find({ _id: { $in: Array.from(userId) } }).select('name email profileImage');
         res.status(200).json(users);
     } catch (err) {
         console.error(err);
@@ -60,7 +60,7 @@ export const getAllMessages = async (req, res) => {
 
 export const updateMessage = async (req, res) => {
     try {
-        const message = await messageRepo.updateMessage(req.params.id, req.body);
+        const message = await messageRepo.updateMessage(req.body);
         res.status(200).json(message);
     } catch (error) {
         res.status(500).json({ message: error.message });

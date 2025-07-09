@@ -6,7 +6,7 @@ import { createCallHistorySchema, deleteCallHistorySchema, endCallSchema, startC
 
 const callRoutes = express.Router();
 callRoutes.post('/start-call', authMiddleware, validationMiddleware(startCallSchema), callController.startCall);
-callRoutes.post('/end-call', authMiddleware, validationMiddleware(endCallSchema), callController.endCall);
+callRoutes.put('/end-call', authMiddleware, validationMiddleware(endCallSchema), callController.endCall);
 callRoutes.post('/history', authMiddleware, validationMiddleware(createCallHistorySchema), callController.createCallHistory);
 callRoutes.get('/:roomId', authMiddleware, callController.getCallHistory);
 callRoutes.get('/', authMiddleware, callController.getCallById);
