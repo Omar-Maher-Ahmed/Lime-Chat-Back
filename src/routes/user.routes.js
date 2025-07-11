@@ -10,7 +10,7 @@ const userRoutes = Router();
 userRoutes.get('/me', authMiddleware, userController.me)
 userRoutes.get('/:id', authMiddleware, userController.getUserById)
 userRoutes.get('/', authMiddleware, userController.getUsers)
-userRoutes.put('/:id', authMiddleware, validationMiddleware(userUpdateSchema), userController.updateUser)
+userRoutes.put('/', authMiddleware, validationMiddleware(userUpdateSchema), userController.updateUser)
 userRoutes.delete('/:id', authMiddleware, validationMiddleware(userDeleteSchema),userController.deleteUser)
 
 export default userRoutes;

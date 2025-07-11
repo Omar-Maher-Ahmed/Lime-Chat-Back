@@ -12,7 +12,12 @@ export const register = async (req, res) => {
       return res.status(400).json({ message: 'Email already exists' });
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({ name, email, password: hashedPassword });
-    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({
+      id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+    },
+      process.env.JWT_SECRET, {
       expiresIn: '7d',
     });
 
@@ -41,9 +46,17 @@ export const login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({
+      name: user.name,
+      email: user.email,
+      id: user._id
+    },
+      process.env.JWT_SECRET, { expiresIn: '7d' }
+    );
 
     res.status(200).json({
+      success: true,
+      message: 'Login successful',
       token,
       user: {
         id: user._id,

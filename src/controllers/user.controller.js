@@ -3,7 +3,9 @@ import * as userRepo from '../repos/user.repo.js';
 export const getUserById = async (req, res) => {
     try {
         const user = await userRepo.getUserById(req.params.id);
-        res.json(user);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        const { password, ...data } = user._doc
+        res.status(200).json(data);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -11,7 +13,8 @@ export const getUserById = async (req, res) => {
 
 export const me = async (req, res) => {
     try {
-        res.json(req.user);
+        const { password, ...data } = req.user._doc
+        res.status(200).json(data);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -28,7 +31,13 @@ export const getUsers = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-        const user = await userRepo.updateUser(req.params.id, req.body);
+        if (req.body.email) {
+            const existEmail = await userRepo.getUserByEmail(req.body.email);
+
+            if (existEmail && existEmail._id != req.user._id.toString()) return res.status(400).json({ message: 'Email already exists' });
+        }
+
+        const user = await userRepo.updateUser(req.user._id, req.body);
         res.json(user);
     } catch (err) {
         res.status(500).json({ message: err.message });

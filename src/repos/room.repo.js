@@ -1,19 +1,24 @@
 import roomModel from "../models/room.model.js";
 
 export const createRoom = async (roomData) => {
-    console.log({ roomData });
-
     try {
-        const room = await roomModel.create(roomData);
+
+        const data = {
+            ...roomData,
+            participants: [...new Set(roomData.participants, roomData.createdBy.toString())],
+            isGroup: roomData.participants.length > 1
+        }
+
+        const room = await roomModel.create(data);
         return room;
     } catch (error) {
         throw new Error(`Error creating room: ${error.message}`);
     }
 };
 
-export const getAllRooms = async () => {
+export const getAllRooms = async (userId) => {
     try {
-        const rooms = await roomModel.find();
+        const rooms = await roomModel.find({ participants: userId }).populate('participants', 'name email avatar isOnline').populate('createdBy', 'name email avatar isOnline');
         return rooms;
     } catch (error) {
         throw new Error(`Error fetching rooms: ${error.message}`);
@@ -22,7 +27,16 @@ export const getAllRooms = async () => {
 
 export const getRoomById = async (roomId) => {
     try {
-        const room = await roomModel.findById(roomId);
+        const room = await roomModel.findById(roomId)
+            .populate('participants', 'name email avatar isOnline')
+            .populate('createdBy', 'name email avatar isOnline')
+            .populate({
+                path: 'messages',
+                populate: {
+                    path: 'sender',
+                    select: 'name email avatar isOnline'
+                }
+            });
         if (!room) {
             throw new Error('Room not found');
         }
@@ -53,14 +67,5 @@ export const deleteRoom = async (roomId) => {
         return room;
     } catch (error) {
         throw new Error(`Error deleting room: ${error.message}`);
-    }
-};
-
-export const list = async (req, res) => {
-    try {
-        const rooms = await roomModel.find();
-        res.status(200).json(rooms);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
     }
 };

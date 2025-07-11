@@ -2,7 +2,7 @@ import joi from 'joi';
 
 export const sendMessage = {
     body: joi.object({
-        sender: joi.string().required(),
+        // sender: joi.string().required(),
         receiver: joi.string().required(),
         room: joi.string().required(),
         content: joi.string().min(1).max(1000).optional().required(),

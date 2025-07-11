@@ -8,7 +8,6 @@ import { Server } from 'socket.io';
 import bootstrap from "./bootstrap.js";
 import initSocket from "../socket/socket.js";
 
-
 const app = express();
 
 app.use(express.json());

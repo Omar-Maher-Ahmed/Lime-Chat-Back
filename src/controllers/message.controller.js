@@ -38,20 +38,20 @@ export const getAllMessages = async (req, res) => {
                 { sender: myId },
                 { receiver: myId }
             ]
-        }).select('sender receiver');
+        }).populate('sender receiver', 'name email avatar isOnline');
 
-        const userId = new Set();
+        // const userId = new Set();
 
-        messages.forEach(msg => {
-            if (msg.sender.toString() !== myId.toString()) {
-                userId.add(msg.sender.toString());
-            }
-            if (msg.receiver.toString() !== myId.toString()) {
-                userId.add(msg.receiver.toString());
-            }
-        });
-        const users = await userModel.find({ _id: { $in: Array.from(userId) } }).select('name email profileImage');
-        res.status(200).json(users);
+        // messages.forEach(msg => {
+        //     if (msg.sender.toString() !== myId.toString()) {
+        //         userId.add(msg.sender.toString());
+        //     }
+        //     if (msg.receiver.toString() !== myId.toString()) {
+        //         userId.add(msg.receiver.toString());
+        //     }
+        // });
+        // const users = await userModel.find({ _id: { $in: Array.from(userId) } }).select('name email profileImage');
+        res.status(200).json(messages);
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: err.message });
