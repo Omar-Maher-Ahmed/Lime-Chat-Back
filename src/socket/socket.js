@@ -107,21 +107,24 @@ const initSocket = (io) => {
         });
 
         // Handle room messages
-        socket.on('roomMessage', (data) => {
-            const user = connectedUsers.get(socket.id);
-            if (user) {
-                const roomMessage = {
-                    id: Date.now(),
-                    username: user.username,
-                    message: data.message,
-                    room: data.room,
-                    timestamp: new Date(),
-                    userId: socket.id
-                };
+        socket.on('roomMessage', async (data) => {
+            console.log('room message', data, socket.id);
 
-                // Send to all users in the room
-                io.to(data.room).emit('roomMessage', roomMessage);
-            }
+
+            const roomMessage = {
+                id: Date.now(),
+                message: data.content,
+                room: data.room,
+                sender: data.sender,
+                timestamp: new Date(),
+                userId: socket.id
+            };
+
+            messageRepo.sendMessage({ sender: data.sender, room: data.room, content: data.content, })
+
+            // Send to all users in the room
+            io.to(data.room).emit('roomMessage', roomMessage);
+
         });
 
         // Handle disconnection
