@@ -3,9 +3,11 @@ import roomModel from "../models/room.model.js";
 export const createRoom = async (roomData) => {
     try {
 
+        const participants = [...new Set(roomData.participants.concat(roomData.createdBy))];
+
         const data = {
             ...roomData,
-            participants: [...new Set(roomData.participants, roomData.createdBy.toString())],
+            participants,
             isGroup: roomData.participants.length > 1
         }
 

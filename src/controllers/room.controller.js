@@ -2,8 +2,8 @@ import * as roomRepo from '../repos/room.repo.js';
 
 export const createRoom = async (req, res) => {
     try {
-        req.body.createdBy = req.user._id;
-        
+        req.body.createdBy = req.user._id.toString();
+
         const room = await roomRepo.createRoom(req.body);
         if (!room) {
             return res.status(400).json({ message: 'Failed to create room' });
