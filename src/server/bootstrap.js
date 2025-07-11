@@ -1,5 +1,4 @@
 import { connectDB } from "../db/database.js";
-import cors from 'cors';
 import authRoutes from "../routes/auth.routes.js";
 import userRoutes from "../routes/user.routes.js";
 import roomRoutes from "../routes/room.routes.js";
@@ -8,7 +7,6 @@ import callRoutes from "../routes/call.routes.js";
 
 
 const bootstrap = (app) => {
-    app.use(cors());
 
     connectDB()
 
