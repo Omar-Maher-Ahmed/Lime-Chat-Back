@@ -1,11 +1,11 @@
 {
   "name": "chat-app-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/server/index.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node src/server/index.js",
+    "dev": "nodemon src/server/index.js"
   },
   "keywords": [],
   "author": "",
