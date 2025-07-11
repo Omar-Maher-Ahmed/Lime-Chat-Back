@@ -20,11 +20,13 @@ app.use(cors());
 app.use(express.json());
 
 const server = http.createServer(app);
-const wss = new WebSocketServer({ server })
+// const wss = new WebSocketServer({ server })
+const io = new Server(server);
+
 
 bootstrap(app);
 
-initSocket(wss);
+initSocket(io);
 
 app.listen(5000, () => console.log('Server running on port 5000'));
 server.listen(5001, () => console.log('Server running on port 5001'));

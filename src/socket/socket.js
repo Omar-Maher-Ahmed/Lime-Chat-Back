@@ -1,24 +1,153 @@
 import Message from '../models/message.model.js';
+import * as  messageRepo from '../repos/message.repo.js';
+let counter = 0
 
-const initSocket = (wss) => {
-    wss.on('connection', (ws) => {
-        console.log('Client connected');
+const connectedUsers = new Map();
 
-        ws.on('message', (message) => {
-            console.log('Received:', JSON.parse(message));
 
-            // Broadcast to all clients
-            wss.clients.forEach((client) => {
-                if (client.readyState === ws.OPEN) {
-                    client.send(`Echo: ${message}`);
-                }
+const initSocket = (io) => {
+    io.on('connection', (socket) => {
+        console.log(`User connected: ${socket.id}`);
+
+        // Handle user joining
+        socket.on('join', (userData) => {
+            connectedUsers.set(socket.id, {
+                id: socket.id,
+                username: userData.username || 'Anonymous',
+                joinedAt: new Date()
+            });
+
+            // Notify all clients about the new user
+            io.emit('userJoined', {
+                userId: socket.id,
+                username: userData.username || 'Anonymous',
+                totalUsers: connectedUsers.size
+            });
+
+            // Send current user count to the new user
+            socket.emit('userCount', connectedUsers.size);
+
+            console.log(`${userData.username || 'Anonymous'} joined the chat`);
+        });
+
+        // Handle chat messages
+        socket.on('message', (messageData) => {
+            const user = connectedUsers.get(socket.id);
+            if (user) {
+                const fullMessage = {
+                    id: Date.now(),
+                    username: user.username,
+                    message: messageData.message,
+                    timestamp: new Date(),
+                    userId: socket.id
+                };
+
+                // Broadcast message to all connected clients
+                io.emit('message', fullMessage);
+                console.log(`Message from ${user.username}: ${messageData.message}`);
+            }
+        });
+
+        // Handle typing indicators
+        socket.on('typing', (data) => {
+            console.log("typing", data)
+            socket.broadcast.emit('userTyping', {
+                username: data.username,
+                userId: socket.id,
+                isTyping: data.isTyping
+            });
+
+        });
+
+        // Handle private messages
+        socket.on('privateMessage', (data) => {
+            const sender = connectedUsers.get(socket.id);
+            if (sender) {
+                const privateMsg = {
+                    id: Date.now(),
+                    from: sender.username,
+                    fromId: socket.id,
+                    message: data.message,
+                    timestamp: new Date(),
+                    isPrivate: true
+                };
+
+                // Send to specific user
+                socket.to(data.targetUserId).emit('privateMessage', privateMsg);
+
+                // Send confirmation to sender
+                socket.emit('privateMessageSent', privateMsg);
+            }
+        });
+
+        // Handle custom events
+        socket.on('customEvent', (data) => {
+            console.log('Custom event received:', data);
+
+            // Echo back to sender
+            socket.emit('customEventResponse', {
+                originalData: data,
+                serverResponse: 'Event received successfully',
+                timestamp: new Date()
             });
         });
 
-        ws.on('close', () => {
-            console.log('Client disconnected');
+        // Handle room joining
+        socket.on('joinRoom', (roomName) => {
+            socket.join(roomName);
+            socket.emit('roomJoined', { room: roomName });
+
+            // Notify others in the room
+            socket.to(roomName).emit('userJoinedRoom', {
+                username: connectedUsers.get(socket.id)?.username || 'Anonymous',
+                room: roomName
+            });
+
+            console.log(`User ${socket.id} joined room: ${roomName}`);
+        });
+
+        // Handle room messages
+        socket.on('roomMessage', (data) => {
+            const user = connectedUsers.get(socket.id);
+            if (user) {
+                const roomMessage = {
+                    id: Date.now(),
+                    username: user.username,
+                    message: data.message,
+                    room: data.room,
+                    timestamp: new Date(),
+                    userId: socket.id
+                };
+
+                // Send to all users in the room
+                io.to(data.room).emit('roomMessage', roomMessage);
+            }
+        });
+
+        // Handle disconnection
+        socket.on('disconnect', () => {
+            const user = connectedUsers.get(socket.id);
+            if (user) {
+                console.log(`User disconnected: ${user.username} (${socket.id})`);
+
+                // Remove user from connected users
+                connectedUsers.delete(socket.id);
+
+                // Notify all clients about user leaving
+                io.emit('userLeft', {
+                    userId: socket.id,
+                    username: user.username,
+                    totalUsers: connectedUsers.size
+                });
+            }
+        });
+
+        // Handle connection errors
+        socket.on('error', (error) => {
+            console.error('Socket error:', error);
         });
     });
+
 
 };
 
