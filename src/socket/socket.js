@@ -50,8 +50,8 @@ const initSocket = (io) => {
 
         // Handle typing indicators
         socket.on('typing', (data) => {
-            console.log("typing", data)
-            socket.broadcast.emit('userTyping', {
+            
+            socket.to(data.room).emit('userTyping', {
                 username: data.username,
                 userId: socket.id,
                 isTyping: data.isTyping
