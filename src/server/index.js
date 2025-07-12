@@ -28,4 +28,5 @@ bootstrap(app);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+console.log(`Server running http://${app.get('host')}:${app.get('port')}`);
 // server.listen(5001, () => console.log('Server running on port 5001'));
