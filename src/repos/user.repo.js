@@ -20,3 +20,7 @@ export const deleteUser = async (id) => {
 export const getUserByEmail = async (email) => {
     return await userModel.findOne({ email });
 }
+
+export const getValues = async () => {
+    return await userModel.find().select('name email');
+}

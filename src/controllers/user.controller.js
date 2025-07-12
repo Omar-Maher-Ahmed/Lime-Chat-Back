@@ -20,6 +20,11 @@ export const me = async (req, res) => {
     }
 };
 
+export const getValues = async (req, res) => {
+    const data = await userRepo.getValues()
+    return res.status(200).json(data);
+};
+
 export const getUsers = async (req, res) => {
     try {
         const users = await userRepo.getUsers();

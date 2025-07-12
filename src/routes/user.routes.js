@@ -8,6 +8,7 @@ import { userDeleteSchema, userUpdateSchema } from '../validations/user.validati
 
 const userRoutes = Router();
 userRoutes.get('/me', authMiddleware, userController.me)
+userRoutes.get('/values', authMiddleware, userController.getValues)
 userRoutes.get('/:id', authMiddleware, userController.getUserById)
 userRoutes.get('/', authMiddleware, userController.getUsers)
 userRoutes.put('/', authMiddleware, validationMiddleware(userUpdateSchema), userController.updateUser)
