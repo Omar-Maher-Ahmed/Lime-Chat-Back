@@ -26,6 +26,9 @@ The architecture is scalable and ready to integrate WebRTC-based calling (1:1 an
 - Emits `receive_message` on delivery
 - Tracks online/disconnected users
 
+
+will be comming: 
+
 ### 📞 Call Logging (ready for WebRTC)
 - Models and API for tracking call data
 - Supports voice, video, and meeting types
